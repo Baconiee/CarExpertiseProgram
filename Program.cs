@@ -2,6 +2,9 @@ using CarExpertise.Data;
 using CarExpertise.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
+
+// Add claims transformation to include CompanyName
+builder.Services.AddScoped<IClaimsTransformation, CompanyNameClaimsTransformation>();
 
 builder.Services.AddRazorPages(options =>
 {

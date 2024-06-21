@@ -23,7 +23,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                         <a class="navbar-brand text-light" asp-area="" asp-controller="Customer" asp-action="Main">
-                            <img src="@User.FindFirst("Logo")?.Value" alt="Logo" style="height: 40px;" /> <!-- Logo görüntüleme -->
+                            @User.FindFirst("CompanyName")?.Value <!-- CompanyName bilgisini görüntüleme -->
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation">
