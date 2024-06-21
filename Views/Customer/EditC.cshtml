@@ -1,0 +1,236 @@
+﻿@model CarExpertise.Models.CarModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Araba Bilgileri</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/site.js"></script>
+    <link rel="stylesheet" href="~/css/style.css" />
+    <!-- jQuery kütüphanesini çağırın -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Oluşturduğunuz site.js dosyasını çağırın -->
+    <script src="/js/site.js"></script>
+    <style>
+        .custom-navbar {
+            background-color: #150869;
+        }
+    </style>
+</head>
+<body>
+    <form id="templateForm" method="post">
+        <div class="card-body">
+            <div class="card-title">
+                <h4 id="customerInfo"><i class="fas fa-user"></i> Araç Bilgileri</h4>
+            </div>
+            <div class="row mb-3">
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="text" id="mb_plaka" name="AracPlaka" class="form-control" placeholder="Plaka">
+                    <i class="fas fa-car indik"></i>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" id="mb_sase" name="SaseNo" class="form-control" placeholder="Şase No">
+                    <i class="fas fa-barcode indik"></i>
+                </div>
+                <div class="col-md-4">
+                    <select name="AracMarkaId" id="marka" class="form-select">
+                        <option value="" hidden disabled selected> Araç Markası Seçiniz </option>
+                        <!-- Diğer seçenekler buraya gelecek -->
+                    </select>
+                    <i class="fas fa-flag indik"></i>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <select name="AracModel" id="model" class="form-select">
+                        <option>Araç Modeli Seçiniz</option>
+                        <!-- Diğer seçenekler buraya gelecek -->
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select name="YakitTipi" class="form-select" id="mb_yakit">
+                        <option>Yakıt Tipi Seçiniz</option>
+                        <option value="Benzin">Benzin</option>
+                        <option value="Dizel">Dizel</option>
+                        <option value="Benzin/LPG">Benzin/LPG</option>
+                        <option value="Elektrik">Elektrik</option>
+                    </select>
+                    <i class="fas fa-gas-pump indik"></i>
+                </div>
+                <div class="col-md-4">
+                    <input type="number" id="mb_yil" name="Yil" class="form-control" placeholder="Yıl">
+                    <i class="fas fa-calendar-check indik"></i>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="number" id="mb_km" name="AracKm" class="form-control" placeholder="Araç Km">
+                    <i class="fas fa-tachometer-alt indik"></i>
+                </div>
+                <div class="col-md-4">
+                    <select name="YedekAnahtar" id="mb_anahtar" class="form-control">
+                        <option>Yedek Anahtar?</option>
+                        <option value="Var">Var</option>
+                        <option value="Yok">Yok</option>
+                        <option value="Var Ama Çalışmıyor">Var Ama Çalışmıyor</option>
+                    </select>
+                    <i class="fas fa-key indik"></i>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" id="mb_alinan" name="Ucret" class="form-control" placeholder="Alınan Ücret">
+                    <i class="fas fa-credit-card indik"></i>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <select name="OdemeSekli" id="mb_odeme" class="form-control">
+                        <option>Ödeme Şekli</option>
+                        <option value="Nakit">Nakit</option>
+                        <option value="Kredi Kartı">Kredi Kartı</option>
+                        <option value="Havale / EFT">Havale / EFT</option>
+                        <option value="Borç Mahsup">Borç Mahsup</option>
+                        <option value="Hediye">Hediye</option>
+                        <option value="Crypto">Crypto</option>
+                    </select>
+                    <i class="fas fa-credit-card indik"></i>
+                </div>
+            </div>
+            <input type="hidden" value="@Model.Id" name="id">
+            <button formaction="/Customer/UpdateCar" type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+
+        </div>
+    </form>
+    <script>
+        $(document).ready(function () {
+            var selectedBrandName; // Seçilen araç markasının adını tutmak için değişken
+
+            // Araba markalarını getir ve araç markası seçildiğinde ilgili modelleri getir
+            $.getJSON("http://localhost:5045/api/vehicle/list", function (data) {
+                console.log(data); // Verileri konsola yazdır
+                var options = '';
+                $.each(data, function (index, item) {
+                    if (item.parentId === null) {
+                        options += '<option value="' + item.id + '">' + item.name + '</option>';
+                    }
+                });
+                $('#marka').html('<option value="" hidden disabled selected> Araç Markası Seçiniz </option>' + options);
+            });
+
+            // Araba markası seçildiğinde
+            $('#marka').change(function () {
+                var selectedBrandId = $(this).val(); // Seçilen araba markasının ID'sini al
+
+                if (selectedBrandId) { // Seçilen marka ID'si varsa
+                    // AJAX isteği yaparak seçilen araç markasının modellerini getir
+                    $.getJSON("http://localhost:5045/api/vehicle/list?parentId=" + selectedBrandId, function (modelData) {
+                        console.log(modelData); // Modelleri konsola yazdır
+                        var modelOptions = '<option value="">Araç Modeli Seçiniz</option>'; // Boş seçenek ekleyelim
+                        $.each(modelData, function (index, model) {
+                            if (model.parentId == selectedBrandId) { // Eşleşen parent ID'ye sahip modelleri ekle
+                                modelOptions += '<option value="' + model.name + '">' + model.name + '</option>';
+                            }
+                        });
+                        $('#model').html(modelOptions); // Modelleri araç modeli dropdown'ına ekle
+                    });
+                } else {
+                    $('#model').html('<option value="">Araç Modeli Seçiniz</option>'); // Seçim yapılmazsa boşalt
+                }
+            });
+        });
+       
+
+        $(document).ready(function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const editCarId = urlParams.get('editCarId');
+
+            if (editCarId) {
+                $.ajax({
+                    url: '/Customer/EditCar?editCarId=' + editCarId,
+                    type: 'GET',
+                    success: function (data) {
+                        console.log("Gelen veri: ", data); // Gelen veriyi konsola yazdır
+
+                        // Gelen verileri input alanlarına yerleştir
+                        $('#mb_plaka').val(data.aracPlaka);
+                        $('#mb_sase').val(data.saseNo);
+                        $('#marka').val(data.aracMarkaId); // Marka ID'yi burada yerleştirin
+                        $('#model').val(data.aracModel);
+                        $('#mb_yakit').val(data.yakitTipi);
+                        $('#mb_yil').val(data.yil);
+                        $('#mb_km').val(data.aracKm);
+                        $('#mb_anahtar').val(data.yedekAnahtar);
+                        $('#mb_alinan').val(data.ucret);
+                        $('#mb_odeme').val(data.odemeSekli);
+
+                        // Araba markalarını getir ve araç markası seçildiğinde ilgili modelleri getir
+                        $.getJSON("http://localhost:5045/api/vehicle/list", function (brands) {
+                            console.log(brands); // Verileri konsola yazdır
+                            var options = '';
+                            $.each(brands, function (index, item) {
+                                if (item.parentId === null) {
+                                    options += '<option value="' + item.id + '">' + item.name + '</option>';
+                                }
+                            });
+                            $('#marka').html('<option value="" hidden disabled selected> Araç Markası Seçiniz </option>' + options);
+
+                            // Gelen araç markasını seçili hale getirin
+                            $('#marka option').each(function () {
+                                if ($(this).val() == data.aracMarkaId) {
+                                    $(this).prop('selected', true);
+                                }
+                            });
+
+                            // Markanın modellerini getir ve aracı modele yerleştir
+                            var selectedBrandId = $('#marka').val();
+                            if (selectedBrandId) {
+                                $.getJSON("http://localhost:5045/api/vehicle/list?parentId=" + selectedBrandId, function (models) {
+                                    console.log(models); // Modelleri konsola yazdır
+                                    var modelOptions = '<option value="" hidden disabled selected>Araç Modeli Seçiniz</option>';
+                                    $.each(models, function (index, model) {
+                                        if (model.parentId == selectedBrandId) {
+                                            modelOptions += '<option value="' + model.name + '">' + model.name + '</option>';
+                                        }
+                                    });
+                                    $('#model').html(modelOptions);
+
+                                    // Gelen araç modelini seçili hale getirin
+                                    $('#model option').each(function () {
+                                        if ($(this).text() === data.aracModel) {
+                                            $(this).prop('selected', true);
+                                        }
+                                    });
+                                });
+                            }
+                        });
+
+                        // Araba markası seçildiğinde
+                        $('#marka').change(function () {
+                            var brandId = $(this).val();
+                            if (brandId) {
+                                $.getJSON("http://localhost:5045/api/vehicle/list?parentId=" + brandId, function (models) {
+                                    console.log(models); // Modelleri konsola yazdır
+                                    var options = '<option value="" hidden disabled selected>Araç Modeli Seçiniz</option>';
+                                    $.each(models, function (index, model) {
+                                        if (model.parentId == brandId) {
+                                            options += '<option value="' + model.name + '">' + model.name + '</option>';
+                                        }
+                                    });
+                                    $('#model').html(options);
+                                });
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Bir hata oluştu: " + error);
+                    }
+                });
+            }
+        });
+
+
+    </script>
+
+</body>
+</html>

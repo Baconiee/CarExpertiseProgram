@@ -1,0 +1,189 @@
+﻿@model IEnumerable<CarExpertise.Models.EkspertizSablon>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Araba Bilgileri</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+ 
+        .card {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .card-body {
+            background-color: white;
+        }
+
+        .card-footer {
+            background-color: white;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .card-title input {
+            font-size: 1.50rem;
+            font-weight: 10000;
+            border: none;
+            width: 100%;
+            background-color: transparent;
+            pointer-events: none;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .card-body .bullet-input,
+        .h2-input {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 5px 10px;
+            width: 100%;
+            background-color: #f8f9fa;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .bullet {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .sablon {
+            position: relative;
+            top: 20px;
+        }
+
+        .bg-primary {
+            background-color: #007bff;
+            position: relative;
+
+        }
+
+        .card-body-wrapper {
+            overflow: hidden;
+            transition: max-height 1s ease, opacity 1s ease;
+        }
+
+            .card-body-wrapper.collapsed {
+                max-height: 0;
+                opacity: 0;
+            }
+    </style>
+</head>
+<body>
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Silme Onayı</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bu müşteriyi silmek istediğinizden emin misiniz?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Evet</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hayır</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-5 g-xl-9">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="card card-flush h-md-100 hidden-card" id="hiddenCard">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card-title">
+                            <input name="SablonAdi" type="text" class="h2-input" placeholder="Şablon Adı" value="@item.SablonAdi" readonly />
+                        </div>
+                        <div>
+                            <form action="/Customer/SablonSil" method="post" class="confirm-delete-form">
+                                <input type="hidden" value="@item.Id" name="id">
+                                <button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#confirmDeleteModal"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-body-wrapper" id="cardBodyWrapper">
+                        <div class="card-body pt-1">
+                            <div class="d-flex flex-column text-gray-600">
+                                <div class="d-flex align-items-center py-2">
+                                    <span class="bullet bg-primary me-3"></span>
+                                    <input name="AracKaporta" type="text" class="bullet-input" placeholder="Araç Kaporta Boya bilgi" value="@item.AracKaporta" readonly />
+                                </div>
+                                <div class="d-flex align-items-center py-2">
+                                    <span class="bullet bg-primary me-3"></span>
+                                    <input name="AracMotor" type="text" class="bullet-input" placeholder="Araç Motor bilgi" value="@item.AracMotor" readonly />
+                                </div>
+                                <div class="d-flex align-items-center py-2">
+                                    <span class="bullet bg-primary me-3"></span>
+                                    <input name="MotorPerformans" type="text" class="bullet-input" placeholder="Motor Performans bilgi" value="@item.MotorPerformans" readonly />
+                                </div>
+                                <div class="d-flex align-items-center py-2">
+                                    <span class="bullet bg-primary me-3"></span>
+                                    <input name="YuruyenAksam" type="text" class="bullet-input" placeholder="Yürüyen Aksam bilgi" value="@item.YuruyenAksam" readonly />
+                                </div>
+                                <div class="d-flex align-items-center py-2">
+                                    <span class="bullet bg-primary me-3"></span>
+                                    <input name="IcDisAksesuar" type="text" class="bullet-input" placeholder="İç Dış Aksesuar bilgi" value="@item.IcDisAksesuar" readonly />
+                                </div>
+                                <div class="d-flex align-items-center py-2">
+                                    <span class="bullet bg-primary me-3"></span>
+                                    <input name="ElektronikSistem" type="text" class="bullet-input" placeholder="Elektronik Sistem bilgi" value="@item.ElektronikSistem" readonly />
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="flex-wrap pt-0">
+                                        <button onclick="applyTemplate(@item.Id)" type="button" class="btn btn-primary sablon" style="background-color: darkgreen;">Şablonu Uygula</button>
+                                        <button onclick="applyTemplateUpdate(@item.Id)" type="button" class="btn btn-primary sablon">Şablonu Düzenle</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var formToSubmit;
+
+            // Delete button'a tıklanınca modal'ı aç
+            $('.delete-button').on('click', function () {
+                formToSubmit = $(this).closest('form');
+                $('#confirmDeleteModal').modal('show');
+            });
+
+            // Confirm delete button'a tıklanınca formu submit et
+            $('#confirmDeleteButton').on('click', function () {
+                formToSubmit.submit();
+            });
+        });
+
+        function applyTemplate(templateId) {
+            window.location.href = '/Customer/Deneme?templateId=' + templateId;
+        }
+
+        function applyTemplateUpdate(updateId) {
+            window.location.href = '/Customer/Deneme?updateId=' + updateId;
+        }
+    </script>
+</body>
+</html>

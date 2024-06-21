@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise\\CarExpertise.csproj": {}
+    "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise - Kopya\\CarExpertise.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise\\CarExpertise.csproj": {
+    "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise - Kopya\\CarExpertise.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise\\CarExpertise.csproj",
+        "projectUniqueName": "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise - Kopya\\CarExpertise.csproj",
         "projectName": "CarExpertise",
-        "projectPath": "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise\\CarExpertise.csproj",
+        "projectPath": "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise - Kopya\\CarExpertise.csproj",
         "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise\\obj\\",
+        "outputPath": "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise - Kopya\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -43,19 +43,37 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.1, )"
+              "version": "[8.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.1, )"
+              "version": "[8.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[8.0.1, )"
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             }
           },
           "imports": [

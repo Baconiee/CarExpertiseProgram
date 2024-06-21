@@ -1,0 +1,77 @@
+@model CarExpertise.Models.CustomerModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Araba Bilgileri</title>
+    <!-- jQuery kütüphanesini çaðýrýn -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Oluþturduðunuz site.js dosyasýný çaðýrýn -->
+    <script src="/js/site.js"></script>
+    <link rel="stylesheet" href="~/css/style.css" />
+    <style>
+        .custom-navbar {
+            background-color: #150869; /* Özel bir renk (örneðin, kýrmýzý) */
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action="/Customer/EditCustomer">
+        <div class="card-body">
+            <div class="card-title">
+                <h4 id="customerInfo"><i class="fas fa-user"></i> Müþteri Bilgileri</h4>
+            </div>
+
+            <hr>
+            <div class="alert alert-info" role="alert">
+                Müþterinin telefon numarasýný girin, eski müþteri ise diðer bilgiler otomatik dolar.
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="text" id="mb_musteriadi" name="MusteriAd" class="form-control" placeholder="Müþteri Adý" required>
+                    <i class="fas fa-user indik"></i>
+                </div>
+                <div class="col-md-4">
+                    <input type="tel" id="mb_telefon" name="Telefon" class="form-control" placeholder="Telefon Numarasý" required>
+                    <i class="fas fa-phone indik"></i>
+                </div>
+                <div class="col-md-4">
+                    <input type="email" id="mb_email" name="Email" class="form-control" placeholder="E-mail --> info@gmail.com" required>
+                    <i class="fas fa-envelope indik"></i>
+                </div>
+            </div>
+            <!-- Gizli input alaný -->
+            <input type="hidden" id="mb_customerId" name="CustomerId" value="">
+        </div>
+        <button type="submit" class="btn btn-primary hidden">Kaydet</button>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const customerId = urlParams.get('customerId');
+
+            if (customerId) {
+                $.ajax({
+                    url: '/Customer/GetCustomer1?customerId=' + customerId,
+                    type: 'GET',
+                    success: function (data) {
+                        console.log("Gelen veri: ", data); // Gelen veriyi konsola yazdýr
+
+                        // Gelen verileri input alanlarýna yerleþtir
+                        $('#mb_musteriadi').val(data.musteriAd);
+                        $('#mb_telefon').val(data.telefon);
+                        $('#mb_email').val(data.email);
+
+                        // customerId'yi gizli input alanýna yerleþtir
+                        $('#mb_customerId').val(customerId);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Bir hata oluþtu: " + error);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

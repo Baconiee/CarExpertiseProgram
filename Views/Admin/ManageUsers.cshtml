@@ -1,0 +1,52 @@
+@model List<UserViewModel>
+
+    @{
+    ViewData["Title"] = "Manage Users";
+    }
+
+    <h1>Manage Users</h1>
+
+    <a asp-controller="Admin" asp-action="AddUser" class="btn btn-primary">Add User</a>
+
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Vergi Numarasý</th>
+                <th>Daire</th>
+                <th>Logo</th>
+                <th>Firma Adý</th>
+                <th>Telefon</th>
+                <th>Adres</th>
+                <th>Firma Id</th>
+                <th>UserId</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Email</td>
+                <td>@user.Password</td>
+                <td>@user.TaxNumber</td>
+                <td>@user.Office</td>
+                <td>@user.Logo</td>
+                <td>@user.CompanyName</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.Address</td>
+                <td>@user.CompanyId</td>
+                <td>@user.UserId</td>
+                <td>
+                    <form asp-controller="Admin" asp-action="DeleteUser" method="post" style="display:inline;">
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>

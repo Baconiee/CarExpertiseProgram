@@ -1,0 +1,77 @@
+@model AddUserViewModel
+
+@{
+    ViewData["Title"] = "Add User";
+}
+
+<h1>Add User</h1>
+
+<form asp-action="AddUser" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="TaxNumber"></label>
+        <input asp-for="TaxNumber" class="form-control" id="TaxNumberInput" />
+        <span asp-validation-for="TaxNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Office"></label>
+        <input asp-for="Office" class="form-control" id="OfficeInput" />
+        <span asp-validation-for="Office" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Logo"></label>
+        <input asp-for="Logo" type="file" class="form-control" />
+        <span asp-validation-for="Logo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CompanyName"></label>
+        <input asp-for="CompanyName" class="form-control" id="CompanyNameInput" />
+        <span asp-validation-for="CompanyName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" class="form-control" id="PhoneNumberInput" />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" id="AddressInput" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Add User</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("CompanyNameInput").addEventListener("input", function () {
+            var companyName = this.value;
+
+            if (companyName.length > 0) {
+                fetch(`/Admin/GetUserDetailsByCompanyName?companyName=${companyName}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        document.getElementById('TaxNumberInput').value = data.taxNumber || '';
+                        document.getElementById('OfficeInput').value = data.office || '';
+                        document.getElementById('PhoneNumberInput').value = data.phoneNumber || '';
+                        document.getElementById('AddressInput').value = data.address || '';
+                    })
+                    .catch(error => console.error('There was a problem with the fetch operation:', error));
+            }
+        });
+    </script>
+}

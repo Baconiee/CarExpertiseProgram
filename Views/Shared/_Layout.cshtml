@@ -7,33 +7,49 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CarExpertise.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <style>
+        .custom-navbar {
+            background-color: #150869; /* Özel bir renk (örneğin, kırmızı) */
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light custom-navbar border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CarExpertise</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                        <a class="navbar-brand text-light" asp-area="" asp-controller="Customer" asp-action="Main">
+                            <img src="@User.FindFirst("Logo")?.Value" alt="Logo" style="height: 40px;" /> <!-- Logo görüntüleme -->
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="Main">Ana Sayfa</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Raporlar</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="Deneme">Raporlar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Çalışanlar</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Customer" asp-action="Try">Ekspertiz Şablon</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Muhasebe</a>
+                            <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" method="post" class="form-inline">
+                                <button type="submit" class="nav-link btn btn-link text-light" style="cursor:pointer;">Çıkış Yap</button>
+                            </form>
                         </li>
+                        }
+                        else
+                        {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Ayarlar</a>
+                            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">Giriş</a>
                         </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -44,5 +60,6 @@
             @RenderBody()
         </main>
     </div>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

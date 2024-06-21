@@ -1,0 +1,49 @@
+﻿@model CarExpertise.Models.Deneme1
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Araba Bilgileri</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/site.js"></script>
+    <link rel="stylesheet" href="~/css/style.css" />
+    <style>
+        .custom-navbar {
+            background-color: #150869;
+        }
+    </style>
+</head>
+<body>
+    <form id="templateForm" method="post">
+        <input type="hidden" name="cardHtml" id="cardHtmlInput">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <div class="card-body">
+            <div class="card-title">
+                <h4 id="customerInfo"><i class="fas fa-user"></i> Müşteri Bilgileri</h4>
+            </div>
+            <hr>
+            <button type="button" class="btn btn-xs btn-outline-dark" onclick="demodoldur()" style="position: absolute; right: 300px; top: 90px;">
+                <i class="bx bxs-color-fill"></i> Demo Müşteri ile Doldur
+            </button>
+            <div class="alert alert-info" role="alert">
+                Müşterinin telefon numarasını girin, eski müşteri ise diğer bilgiler otomatik dolar.
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="text" id="mb_musteriadi" name="MusteriAd" class="form-control" placeholder="Müşteri Adı" value="@Model?.MusteriAd">
+                    <i class="fas fa-user indik"></i>
+                </div>
+                <div class="col-md-4">
+                    <input type="tel" id="mb_telefon" name="Telefon" class="form-control" placeholder="Telefon Numarası" value="@Model?.Telefon">
+                    <i class="fas fa-phone indik"></i>
+                </div>
+                <div class="col-md-4">
+                    <input type="email" id="mb_email" name="Email" class="form-control" placeholder="E-mail --> info@gmail.com" value="@Model?.Email">
+                    <i class="fas fa-envelope indik"></i>
+                </div>
+            </div>
+            <button type="submit" formaction="/Customer/UpdateCustomer" class="btn btn-primary">Değişiklikleri Kaydet</button>
+        </div>
+    </form>
+</body>
+</html>
