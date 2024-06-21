@@ -4328,32 +4328,61 @@
             document.getElementById("mb_yil").value = "2024";
             document.getElementById("mb_km").value = "2400";
             document.getElementById("mb_alinan").value = "2400";
-            var selectElement = document.getElementById("marka");
-            var optionValue = "19587"; // Tesla'nın value değeri
 
-            // "Tesla" seçeneğini seç
-            selectElement.value = optionValue;
             var selectElement1 = document.getElementById("mb_yakit");
-            var optionValue1 = "Elektrik"; // Tesla'nın value değeri
-
-            // "Tesla" seçeneğini seç
+            var optionValue1 = "Elektrik"; // Yakıt türü değeri
             selectElement1.value = optionValue1;
 
             var selectElement2 = document.getElementById("mb_anahtar");
-            var optionValue2 = "Var"; // Tesla'nın value değeri
-
-            // "Tesla" seçeneğini seç
+            var optionValue2 = "Var"; // Anahtar durumu değeri
             selectElement2.value = optionValue2;
 
             var selectElement3 = document.getElementById("mb_odeme");
-            var optionValue3 = "Kredi Kartı"; // Tesla'nın value değeri
-
-            // "Tesla" seçeneğini seç
+            var optionValue3 = "Kredi Kartı"; // Ödeme türü değeri
             selectElement3.value = optionValue3;
 
+            // Araç markalarını getir ve seçili hale getir
+            $.getJSON("http://localhost:5045/api/vehicle/list", function (brands) {
+                console.log(brands); // Verileri konsola yazdır
+                var options = '';
+                $.each(brands, function (index, item) {
+                    if (item.parentId === null) {
+                        options += '<option value="' + item.id + '">' + item.name + '</option>';
+                    }
+                });
+                $('#marka').html('<option value="" hidden disabled selected> Araç Markası Seçiniz </option>' + options);
 
+                // Araç markasını seç
+                $('#marka option').each(function () {
+                    if ($(this).val() == 19587) { // İdsi 19587 olan araç markasını seç
+                        $(this).prop('selected', true);
+                    }
+                });
 
+                // Markanın modellerini getir ve aracı modele yerleştir
+                var selectedBrandId = $('#marka').val();
+                if (selectedBrandId) {
+                    $.getJSON("http://localhost:5045/api/vehicle/list?parentId=" + selectedBrandId, function (models) {
+                        console.log(models); // Modelleri konsola yazdır
+                        var modelOptions = '<option value="" hidden disabled selected>Araç Modeli Seçiniz</option>';
+                        $.each(models, function (index, model) {
+                            if (model.parentId == selectedBrandId) {
+                                modelOptions += '<option value="' + model.id + '">' + model.name + '</option>';
+                            }
+                        });
+                        $('#model').html(modelOptions);
+
+                        // Araç modelini seç
+                        $('#model option').each(function () {
+                            if ($(this).val() == 19593) { // İdsi 19593 olan araç modelini seç
+                                $(this).prop('selected', true);
+                            }
+                        });
+                    });
+                }
+            });
         }
+
 
         function setArkaUcParca(secilenId) {
             // Verilen id'ye sahip select elementini bul
