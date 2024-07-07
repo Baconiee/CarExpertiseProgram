@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "xKskI/lkwJsjrGu5+7cgUvUM1yruGXGDlBV9+B0x8s4=",
+  "Hash": "KM3OtExSWDRQ4Rg5PuEza2ppz+/oZIOzc1knXgb2hUU=",
   "Source": "CarExpertise",
   "BasePath": "_content/CarExpertise",
   "Mode": "Default",
@@ -2352,6 +2352,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise - Kopya\\wwwroot\\logos\\4345e99e-72ab-4e88-b4ef-3c4868120509.jpg",
+      "SourceId": "CarExpertise",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise - Kopya\\wwwroot\\",
+      "BasePath": "_content/CarExpertise",
+      "RelativePath": "logos/4345e99e-72ab-4e88-b4ef-3c4868120509.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\logos\\4345e99e-72ab-4e88-b4ef-3c4868120509.jpg"
     },
     {
       "Identity": "C:\\Users\\PC\\Desktop\\Software\\CarExpertiseProject\\CarExpertise - Kopya\\wwwroot\\logos\\arac-logo.jpg",

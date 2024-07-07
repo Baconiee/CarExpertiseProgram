@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CarExpertise.Models.EkspertizSablon>
+﻿@model IEnumerable<CarExpertise.Models.ExpertiseTemplate>
 
 
 <!DOCTYPE html>
@@ -61,7 +61,7 @@
     </div>
 
     <div style="text-align: center;">
-        <a class="navbar-brand text-light" asp-area="" asp-controller="Customer" asp-action="Main">
+        <a class="navbar-brand text-light" asp-area="" asp-controller="Customer">
             <img src="@User.FindFirst("Logo")?.Value" alt="Logo" style="height: 150px;" /> <!-- Logo görüntüleme -->
         </a>
     </div>
@@ -70,7 +70,7 @@
     <div class="mb-3"></div>
 
 
-    <form id="templateForm" action="/Try" method="post">
+    <form id="templateForm" method="post">
         <div class="btn-group-vertical8" role="group" aria-label="Vertical button group8">
             <button id="saveAndPrintButton" type="button" onclick="saveAndPrint()" class="btn btn-outline-success">Raporu Kaydet ve Yazdır</button>
         </div>
@@ -607,6 +607,17 @@
                 background-color: darkgreen;
                 color: white;
             }
+            .print-button {
+                background-color: darkblue;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+                border-radius: 5px; /* Soften the edges */
+                visibility: hidden; /* Make the button invisible */
+            }
+            
         </style>
 
 
@@ -2591,6 +2602,7 @@
         <button id="degislikleriKayet" type="submit" class="btn btn-danger btn-goldenrod invisible-btn" onclick="showCard1(event)">Değişiklikleri Kaydet</button>
         <button id="saveAndPrintButton" type="button" onclick="saveAndPrint()" class="btn btn-dark-green">Raporu Kaydet ve Yazdır</button>
         <button id="editButton" type="submit" class="btn btn-danger hidden" onclick="showCard(event)">Şablonu Düzenle</button>
+        <button class="print-button" onclick="printWindow()">Raporu Yazdır</button>
 
 
 
@@ -2606,8 +2618,66 @@
 
     </form>
     <script>
+        async function printWindow() {
+            
+            
+           
+                    const navbar = document.querySelector('.custom-navbar');
+                    if (navbar) {
+                        navbar.style.display = 'none';
+                    }
 
+                    const alertInfo = document.querySelector('.alert.alert-info');
+                    if (alertInfo) {
+                        alertInfo.style.display = 'none';
+                    }
 
+                    const paragraphs = document.querySelectorAll('p');
+                    paragraphs.forEach(p => {
+                        p.style.display = 'none';
+                    });
+
+                    const buttons = document.querySelectorAll('button');
+                    buttons.forEach(button => {
+                        if (button.classList.contains('btn-dark-green')) {
+                            button.style.display = 'none';
+                        }
+                    });
+
+                    // Seçili select'leri gizle
+                    const selects = ['demoDoldur', 'boya-select', 'hava-select', 'motor-mekanik-select', 'yuruyen-select', 'trim-select'];
+                    selects.forEach(selectId => {
+                        const selectElement = document.getElementById(selectId);
+                        if (selectElement) {
+                            selectElement.style.display = 'none';
+                        }
+                    });
+
+                    window.print();
+
+                    // Print işleminden sonra elemanları tekrar görünür yap
+                    if (navbar) {
+                        navbar.style.display = 'block';
+                    }
+                    if (alertInfo) {
+                        alertInfo.style.display = 'block';
+                    }
+                    paragraphs.forEach(p => {
+                        p.style.display = 'block';
+                    });
+                    buttons.forEach(button => {
+                        if (button.classList.contains('btn-dark-green')) {
+                            button.style.display = 'inline-block';  // Butonları tekrar görünür yap
+                        }
+                    });
+                    selects.forEach(selectId => {
+                        const selectElement = document.getElementById(selectId);
+                        if (selectElement) {
+                            selectElement.style.display = 'inline-block';
+                        }
+                    });              
+        }
+        
 
         $(document).ready(function () {
             const urlParams = new URLSearchParams(window.location.search);
@@ -2644,9 +2714,9 @@
             let firstInvalidField = null;
 
             requiredFields.forEach(field => {
-                field.style.borderColor = '';  // Temizle
+                field.style.borderColor = '';  // Clear
                 if (!field.value) {
-                    field.style.borderColor = 'red';  // Boş olan alanları kırmızı yap
+                    field.style.borderColor = 'red';  // Highlight empty fields in red
                     if (!firstInvalidField) {
                         firstInvalidField = field;
                     }
@@ -2656,7 +2726,7 @@
             if (firstInvalidField) {
                 firstInvalidField.focus();
                 firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                return;  // Form gönderimini durdur
+                return;  // Prevent form submission
             }
 
             try {
@@ -2688,7 +2758,19 @@
                         }
                     });
 
-                    // Seçili select'leri gizle
+                    // Hide the editButton
+                    const editButton = document.getElementById('editButton');
+                    if (editButton) {
+                        editButton.style.display = 'none';
+                    }
+
+                    // Hide the demoDoldur button
+                    const demoDoldur = document.getElementById('demoDoldur');
+                    if (demoDoldur) {
+                        demoDoldur.style.display = 'none';
+                    }
+
+                    // Hide selected selects
                     const selects = ['boya-select', 'hava-select', 'motor-mekanik-select', 'yuruyen-select', 'trim-select'];
                     selects.forEach(selectId => {
                         const selectElement = document.getElementById(selectId);
@@ -2699,7 +2781,7 @@
 
                     window.print();
 
-                    // Print işleminden sonra elemanları tekrar görünür yap
+                    // Make elements visible again after printing
                     if (navbar) {
                         navbar.style.display = 'block';
                     }
@@ -2711,9 +2793,17 @@
                     });
                     buttons.forEach(button => {
                         if (button.classList.contains('btn-dark-green')) {
-                            button.style.display = 'inline-block';  // Butonları tekrar görünür yap
+                            button.style.display = 'inline-block';  // Make buttons visible again
                         }
                     });
+                    // Show the editButton again
+                    if (editButton) {
+                        editButton.style.display = 'inline-block';
+                    }
+                    // Show the demoDoldur button again
+                    if (demoDoldur) {
+                        demoDoldur.style.display = 'inline-block';
+                    }
                     selects.forEach(selectId => {
                         const selectElement = document.getElementById(selectId);
                         if (selectElement) {
@@ -2721,12 +2811,14 @@
                         }
                     });
                 } else {
-                    console.error('Form gönderimi başarısız:', response.statusText);
+                    console.error('Form submission failed:', response.statusText);
                 }
             } catch (error) {
-                console.error('Form gönderimi sırasında bir hata oluştu:', error);
+                console.error('An error occurred during form submission:', error);
             }
         }
+
+
 
 
 
@@ -2883,15 +2975,22 @@
 
         $(document).ready(function () {
             const urlParams = new URLSearchParams(window.location.search);
-            const ekspertizId = urlParams.get('ekspertizId'); // Ekspertiz ID'sini al
+            const expertiseId = urlParams.get('expertiseId'); // Ekspertiz ID'sini al
 
-            if (ekspertizId) {
+            if (expertiseId) {
                 $.ajax({
-                    url: '/Customer/GetSearchCarDetails?ekspertizId=' + ekspertizId,
+                    url: '/Customer/GetSearchCarDetails?expertiseId=' + expertiseId,
                     type: 'GET',
                     success: function (data) {
                         console.log("Gelen veri: ", data); // Gelen veriyi konsola yazdır
-
+                        $('#saveAndPrintButton').css('visibility', 'hidden');
+                        $('.print-button').css('visibility', 'visible');
+                        const buttons = document.querySelectorAll('button');
+                        buttons.forEach(button => {
+                            if (button.classList.contains('btn-dark-green')) {
+                                button.style.display = 'none';
+                            }
+                        });
                         // Gelen verileri select optionlarına yerleştir
                         $('#kaporta-boya-on-tampon').val(data.onTampon);
                         $('#kaporta-boya-sag-on-camurluk').val(data.sagOnCamurluk);
@@ -3076,6 +3175,8 @@
                         $('#not_motor_beyin_elektroniği').val(data.not_motor_beyin_elektroniği);
                         $('#not_sanziman_elektroniği').val(data.not_sanziman_elektroniği);
 
+                        $('#kaporta-boya-on-tampon, #kaporta-boya-sag-on-camurluk, #kaput, #sag-on-kapi, #sol-on-sase, #sag-arka-kapi, #sol-arka-direk, #sag-arka-camurluk, #sol-on-camurluk, #sag-maspiyel-arka, #sol-on-kapi, #sag-maspiyel-on, #sol-arka-kapi, #sag-on-direk, #sol-arka-camurluk, #sag-on-sase, #sol-maspiyel-arka, #sag-arka-sase, #sol-maspiyel-on, #tavan, #sol-on-direk, #bagaj, #sol-arka-sase, #havuz-saci, #sag-arka-direk, #arka-tampon, #sag-orta-direk, #sol-orta-direk, #arka-panel, #on-panel, #arka-podye, #on-podye, #motor-yag-seviyesi, #motor-genel, #motor-turbo, #motor-turbo-intercoller, #motor-direksiyon-pompa, #motor-fren-hidroligi, #motor-enjektor, #motor-hava-filtre-kabin, #motor-yakit-sistemi, #motor-yakit-sizdirmazlik, #motor-sanzuman-debriyaj, #motor-egsoz-sistemi, #motor-conta-yanik-testi, #motor-v-kayisi, #motor-yag-sizdirmazlik, #motor-aku, #motorGucFabrika, #motorGucOlculen, #motorNotlar, #yuruyen-lastikler, #yuruyen-jantlar, #yuruyen-rot-kollari-basliklari, #yuruyen-amartisor-kontrol, #yuruyen-fren-diskleri, #yuruyen-fren-balatalari, #yuruyen-yakit-hortumlari, #yuruyen-helezonlar-yaylar, #yuruyen-aks-kontrol, #yuruyen-salincak-burc, #yuruyen-arac-alti-kontrol, #yuruyen-davlumbaz-kontrol, #yuruyen-dingil-kontrol, #yuruyen-difransiyel-kontrol, #trim-aynalar, #trim-Camlar, #trim-Silecekler, #trim-Farlar, #trim-Sunroof, #trim-Stepne, #trim-Klima, #trim-ABS-Fren, #trim-Radyo, #trim-Dosemeler, #trim-HizSabitleyici, #trim-ParkSensorleri, #trim-Korna, #trim-Gosterge, #hava-Airbag, #hava-ESP, #hava-motor-ariza-lambasi, #hava-elektrikli-direksiyon, #hava-abs, #hava-esr, #hava-lastik-basinc, #hava-klima, #hava-motor-beyin-elektroniği, #hava-şanzıman-elektroniği, #hasarKmNot, #dipNot, #not-on-tampon, #not-sol-on-direk, #not-sag-on-camurluk, #not-kaput, #not-sag-on-kapi, #not-sol-on-sase, #not-sag-arka-kapi, #not-sol-arka-direk, #not-sag-arka-camurluk, #not-sol-on-camurluk, #not-sag-maspiyel-arka, #not-sol-on-kapi, #not-sag-maspiyel-on, #not-sol-arka-kapi, #not-sag-on-direk, #not-sol-arka-camurluk, #not-sag-on-sase, #not-sol-maspiyel-arka, #not-sag-arka-sase, #not-sol-maspiyel-on, #not-tavan, #not-bagaj, #not-sol-arka-sase, #not-havuz-saci, #not-sag-arka-direk, #not-arka-tampon, #not-sag-orta-direk, #not-sol-orta-direk, #not-on-podye, #not-arka-podye, #not-on-panel, #not-arka-panel').prop('disabled', true).css({ 'pointer-events': 'none', 'background-color': '#e9ecef', 'cursor': 'not-allowed' });
+                        $('#trim-select, #hava-select, #demoDoldur, #boya-select, #motor-mekanik-select, #yuruyen-select, #not-motor-yag, #not-motor-genel, #not-turbo-durum, #not-turbo-intercoller, #not-direksiyon-pompa, #not-fren-hidrolik, #not-enjektor-durum, #not-hava-filtre-kabin, #not-yakit-sistem, #not-yakit-sizdirmazlik, #not-sanzuman-debriyaj, #not-egzoz-sistem, #not-conta-yanik, #not-v-kayis, #not-yag-sizdirmazlik, #not-aku-durum, #not_Lastikler, #not_Jantlar, #not_RotKollari, #not_Amartisor, #not_FrenDiskleri, #not_FrenBalatalari, #not_YakıtHortumlari, #not_Helezonlar, #not_AksKontrol, #not_SalincakBurc, #not_AracAltıMuhafaza, #not_Davlumbaz, #not_DingilKontrol, #not_Difransiyel, #not_Aynalar, #not_Camlar, #not_Silecekler, #not_Farlar, #not_Sunroof, #not_Stepne, #not_Klima, #not_abs_fren, #not_radyo_teyp, #not_dosemeler, #not_hiz_sabitleyici, #not_park_sensorleri, #not_korna, #not_gosterge_panelleri, #not_airbag, #not_esp, #not_motor_ariza_lambasi, #not_elektrikli_direksiyon, #not_abs, #not_esr, #not_lastik_basinc, #not_klima_elektronigi, #not_motor_beyin_elektroniği, #not_sanziman_elektroniği').prop('disabled', true).css({ 'pointer-events': 'none', 'background-color': '#e9ecef', 'cursor': 'not-allowed' });
 
                         $('#editButton').hide();
 
@@ -3141,7 +3242,7 @@
 
         $(document).ready(function () {
             const urlParams = new URLSearchParams(window.location.search);
-            const ekspertizId = urlParams.get('ekspertizId'); // Ekspertiz ID'sini al
+            const expertiseId = urlParams.get('expertiseId'); // Ekspertiz ID'sini al
 
             function initializeUpdateFunctions() {
                 updateTextElement('kaporta-boya-on-tampon', 't-on-tampon');
@@ -3189,9 +3290,9 @@
 
             }
 
-            if (ekspertizId) {
+            if (expertiseId) {
                 $.ajax({
-                    url: '/Customer/GetSearchCarDetails?ekspertizId=' + ekspertizId,
+                    url: '/Customer/GetSearchCarDetails?expertiseId=' + expertiseId,
                     type: 'GET',
                     success: function (data) {
                         console.log("Gelen veri: ", data); // Gelen veriyi konsola yazdır
@@ -3324,11 +3425,11 @@
         // Rapor Yazdırma(Deneme1.cs Bilgileri)
         $(document).ready(function () {
             const urlParams = new URLSearchParams(window.location.search);
-            const expertiseId = urlParams.get('expertiseId');
+            const musteriId = urlParams.get('musteriId');
 
-            if (expertiseId) {
+            if (musteriId) {
                 $.ajax({
-                    url: '/Customer/GetCustomer?expertiseId=' + expertiseId,
+                    url: '/Customer/GetCustomer?musteriId=' + musteriId,
                     type: 'GET',
                     success: function (data) {
                         console.log("Gelen veri: ", data); // Gelen veriyi konsola yazdır
@@ -3347,6 +3448,10 @@
                         $('#mb_anahtar').val(data.yedekAnahtar);
                         $('#mb_alinan').val(data.ucret);
                         $('#mb_odeme').val(data.odemeSekli);
+                        $('#mb_musteriadi').css({ 'pointer-events': 'none', 'background-color': '#e9ecef', 'cursor': 'not-allowed' });
+                        $('#mb_telefon').css({ 'pointer-events': 'none', 'background-color': '#e9ecef', 'cursor': 'not-allowed' });
+                        $('#mb_email').css({ 'pointer-events': 'none', 'background-color': '#e9ecef', 'cursor': 'not-allowed' });
+
 
                         // "Kaydet" ve "Şablonu Düzenle" butonlarını gizle
                         $('#saveButton').css('visibility', 'hidden');
@@ -3375,7 +3480,95 @@
                     type: 'GET',
                     success: function (data) {
                         console.log("Gelen veri: ", data); // Gelen veriyi konsola yazdır
+                        // Gelen verileri select optionlarına yerleştir
 
+                        $('#mb_plaka').val(data.aracPlaka);
+                        $('#mb_sase').val(data.saseNo);
+                        $('#marka').val(data.aracMarka);
+                        $('#model').val(data.aracModel);
+                        $('#mb_yakit').val(data.yakitTipi);
+                        $('#mb_yil').val(data.yil);
+                        $('#mb_km').val(data.aracKm);
+                        $('#mb_anahtar').val(data.yedekAnahtar);
+                        $('#mb_alinan').val(data.ucret);
+                        $('#mb_odeme').val(data.odemeSekli);
+
+                        // Elementleri etkileşime kapat
+                        $('#mb_plaka').prop('readonly', true);
+                        $('#mb_sase').prop('readonly', true);
+                        $('#mb_yil').prop('readonly', true);
+                        $('#mb_km').prop('readonly', true);
+                        $('#mb_alinan').prop('readonly', true);
+
+                        $('#marka').css({ 'pointer-events': 'none', 'background-color': '#e9ecef', 'cursor': 'not-allowed' });
+                        $('#model').css({ 'pointer-events': 'none', 'background-color': '#e9ecef', 'cursor': 'not-allowed' });
+                        $('#mb_yakit').css({ 'pointer-events': 'none', 'background-color': '#e9ecef', 'cursor': 'not-allowed' });
+                        $('#mb_anahtar').css({ 'pointer-events': 'none', 'background-color': '#e9ecef', 'cursor': 'not-allowed' });
+                        $('#mb_odeme').css({ 'pointer-events': 'none', 'background-color': '#e9ecef', 'cursor': 'not-allowed' });
+
+                        $('#saveButton').css('visibility', 'visible'); // Değiştirildi
+
+                        // Araba markalarını getir ve araç markası seçildiğinde ilgili modelleri getir
+                        $.getJSON("http://localhost:5045/api/vehicle/list", function (brands) {
+                            console.log(brands); // Verileri konsola yazdır
+                            var options = '';
+                            $.each(brands, function (index, item) {
+                                if (item.parentId === null) {
+                                    options += '<option value="' + item.id + '">' + item.name + '</option>';
+                                }
+                            });
+                            $('#marka').html('<option value="" hidden disabled selected> Araç Markası Seçiniz </option>' + options);
+
+                            // Gelen araç markasını seçili hale getirin
+                            $('#marka option').each(function () {
+                                if ($(this).text() === data.aracMarka) {
+                                    $(this).prop('selected', true);
+                                }
+                            });
+
+                            // Markanın modellerini getir ve aracı modele yerleştir
+                            var selectedBrandId = $('#marka').val();
+                            if (selectedBrandId) {
+                                $.getJSON("http://localhost:5045/api/vehicle/list?parentId=" + selectedBrandId, function (models) {
+                                    console.log(models); // Modelleri konsola yazdır
+                                    var modelOptions = '<option value="" hidden disabled selected>Araç Modeli Seçiniz</option>';
+                                    $.each(models, function (index, model) {
+                                        if (model.parentId == selectedBrandId) {
+                                            modelOptions += '<option value="' + model.name + '">' + model.name + '</option>';
+                                        }
+                                    });
+                                    $('#model').html(modelOptions);
+
+                                    // Gelen araç modelini seçili hale getirin
+                                    $('#model option').each(function () {
+                                        if ($(this).text() === data.aracModel) {
+                                            $(this).prop('selected', true);
+                                        }
+                                    });
+                                });
+                            }
+                        });
+
+                        // Araba markası seçildiğinde
+                        $('#marka').change(function () {
+                            var selectedBrandId = $(this).val(); // Seçilen araba markasının ID'sini al
+
+                            if (selectedBrandId) { // Seçilen marka ID'si varsa
+                                // AJAX isteği yaparak seçilen araç markasının modellerini getir
+                                $.getJSON("http://localhost:5045/api/vehicle/list?parentId=" + selectedBrandId, function (modelData) {
+                                    console.log(modelData); // Modelleri konsola yazdır
+                                    var modelOptions = '<option value="" hidden disabled selected>Araç Modeli Seçiniz</option>'; // Boş seçenek ekleyelim
+                                    $.each(modelData, function (index, model) {
+                                        if (model.parentId == selectedBrandId) { // Eşleşen parent ID'ye sahip modelleri ekle
+                                            modelOptions += '<option value="' + model.name + '">' + model.name + '</option>';
+                                        }
+                                    });
+                                    $('#model').html(modelOptions); // Araba modeli seçim kutusunu güncelle
+                                });
+                            } else {
+                                $('#model').html('<option value="" hidden disabled selected>Araç Modeli Seçiniz</option>'); // Seçilen araba markası yoksa, araba modelini boşalt
+                            }
+                        });
                         // Gelen verileri select optionlarına yerleştir
                         $('#kaporta-boya-on-tampon').val(data.onTampon);
                         $('#kaporta-boya-sag-on-camurluk').val(data.sagOnCamurluk);

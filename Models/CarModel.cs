@@ -3,6 +3,7 @@
     public class CarModel
     {
         public int Id { get; set; }
+        public bool IsActive { get; set; }
         public int EkspertizId { get; set; }
         public int CompanyId { get; set; }
         public string? AracPlaka { get; set; }

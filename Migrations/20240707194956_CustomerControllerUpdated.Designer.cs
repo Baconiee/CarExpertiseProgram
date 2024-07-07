@@ -4,6 +4,7 @@ using CarExpertise.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarExpertise.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240707194956_CustomerControllerUpdated")]
+    partial class CustomerControllerUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,7 +175,7 @@ namespace CarExpertise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CarModelTable", (string)null);
+                    b.ToTable("CarModelTable");
                 });
 
             modelBuilder.Entity("CarExpertise.Models.CustomerModel", b =>
@@ -203,7 +206,7 @@ namespace CarExpertise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CustomerTable", (string)null);
+                    b.ToTable("CustomerTable");
                 });
 
             modelBuilder.Entity("CarExpertise.Models.ExpertiseModel", b =>
@@ -795,7 +798,7 @@ namespace CarExpertise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExpertiseTable", (string)null);
+                    b.ToTable("ExpertiseTable");
                 });
 
             modelBuilder.Entity("CarExpertise.Models.ExpertiseTemplate", b =>
@@ -1111,7 +1114,7 @@ namespace CarExpertise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExpertiseTemplateTable", (string)null);
+                    b.ToTable("ExpertiseTemplateTable");
                 });
 
             modelBuilder.Entity("CarExpertise.Models.TryVehicle", b =>
@@ -1169,7 +1172,7 @@ namespace CarExpertise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Trys", (string)null);
+                    b.ToTable("Trys");
                 });
 
             modelBuilder.Entity("CarExpertise.Models.VehicleModels", b =>
@@ -1236,7 +1239,7 @@ namespace CarExpertise.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VehicleModelss", (string)null);
+                    b.ToTable("VehicleModelss");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -2,8 +2,26 @@
 {
     public class ExpertiseModel
     {
-        // Ön Tampon Durumu
         public int Id { get; set; }
+        /* Car Table */
+        public string? AracPlaka { get; set; }
+        public bool IsActive { get; set; }
+
+        public string? SaseNo { get; set; }
+        public string? AracMarka { get; set; }
+        public int AracMarkaId { get; set; }
+        public string? AracModel { get; set; }
+        public string? YakitTipi { get; set; }
+        public string? Yil { get; set; }
+        public string? AracKm { get; set; }
+        public string? YedekAnahtar { get; set; }
+        public int? Ucret { get; set; }
+        public string? OdemeSekli { get; set; }
+        public DateTime Tarih { get; set; } 
+
+        public int CompanyId { get; set; }
+        public int MusteriId { get; set; }
+        public int AracId { get; set; }
         public string? OnTampon { get; set; }
         public string? ntsi_OnTampon { get; set; }
 
@@ -62,8 +80,20 @@
 
         public string? Tavan { get; set; }
         public string? ntsi_Tavan { get; set; }
+		public string? OnPodye { get; set; }
+		public string? ntsi_OnPodye { get; set; }
 
-        public string? SolOnDirek { get; set; }
+		public string? ArkaPodye { get; set; }
+		public string? ntsi_ArkaPodye { get; set; }
+
+		public string? OnPanel { get; set; }
+		public string? ntsi_OnPanel { get; set; }
+
+		public string? ArkaPanel { get; set; }
+		public string? ntsi_ArkaPanel { get; set; }
+
+
+		public string? SolOnDirek { get; set; }
         public string? ntsi_SolOnDirek { get; set; }
         public string? Bagaj { get; set; }
         public string? ntsi_Bagaj { get; set; }
@@ -111,8 +141,8 @@
         public string? YakitSistem { get; set; }
         public string? ntsi_YakitSistem { get; set; }
 
-        public string? YakitSizdirmalik { get; set; }
-        public string? ntsi_YakitSizdirmalik { get; set; }
+        public string? YakitSizdirmazlik { get; set; }
+        public string? ntsi_YakitSizdirmazlik { get; set; }
 
         public string? SanzumanDebriyaj { get; set; }
         public string? ntsi_SanzumanDebriyaj { get; set; }
@@ -245,5 +275,6 @@
         public string? not_sanziman_elektroniği { get; set; }
         public string? HasarKmNot { get; set; }
         public string? DipNot { get; set; }
+
     }
 }

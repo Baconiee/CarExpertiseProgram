@@ -1,0 +1,137 @@
+@model IEnumerable<CarExpertise.Models.ExpertiseModel>
+
+    <!DOCTYPE html>
+    <html lang="tr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Arama Sonuçları</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <!-- Bootstrap CSS dosyas�n� ekleyin -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <style>
+            .search-input {
+                padding: 8px 12px;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                font-size: 16px;
+                margin-right: 80px; /* Bu de�eri ihtiyac�n�za g�re ayarlayabilirsiniz */
+                position: relative; /* Relative pozisyonland�rma */
+                left: -125px; /* Butonu sa�a �tele */
+                top: 30px;
+            }
+
+            .custom-button {
+                background-color: white;
+                color: #150869;
+                border: 2px solid #150869;
+                padding: 5px 5px;
+                font-size: 16px;
+                border-radius: 5px; /* K��eleri yuvarlatmak i�in */
+                cursor: pointer; /* Buton efekti i�in */
+                text-align: center;
+                text-decoration: none; /* Link ise alt �izgiyi kald�rmak i�in */
+                display: inline-block; /* Buton efekti i�in */
+                font-weight: bold; /* Yaz�y� kal�n yapmak i�in */
+                position: relative; /* Relative pozisyonland�rma */
+                left: 180px; /* Butonu sa�a �tele */
+                top: -5px;
+            }
+
+                .custom-button:hover {
+                    background-color: #150869; /* �zerine gelindi�inde arka plan rengini de�i�tirme */
+                    color: white; /* �zerine gelindi�inde yaz� rengini de�i�tirme */
+                }
+
+            .musteriBilgi {
+                position: relative; /* Relative pozisyonland�rma */
+                top: 60px;
+            }
+
+            .table-container {
+                margin-left: -70px; /* Burada istedi�iniz piksel de�erini ayarlayabilirsiniz */
+            }
+
+            .custom-button {
+                position: relative; /* Relative pozisyonland�rma */
+                margin-right: 100px; /* Buton ile input aras�nda bo�luk olu�turmak i�in kullanabilirsiniz */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="table-container">
+            <h2 class="musteriBilgi" style="font-size: 24px; font-weight: bold;">Kayıtlı Ekspertizler</h2>
+            <form action="/Customer/SearchExpertise" method="post" style="display: inline-block; float: right;">
+                <input name="search" type="text" placeholder="Ekspertiz ara" class="search-input form-control">
+                <button type="submit" class="custom-button">Arat</button>
+            </form>
+            <div class="mb-3"></div>
+            @if (Model != null && Model.Any())
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Araç Plaka</th>
+                        <th scope="col">Araç Şase</th>
+                        <th scope="col">Araç Marka</th>
+                        <th scope="col">Araç Model</th>
+                        <th scope="col">Yakıt Tipi</th>
+                        <th scope="col">Yıl</th>
+                        <th scope="col">Araç Kilometre</th>
+                        <th scope="col">Araç Yedek Anahtar</th>
+                        <th scope="col">Alınan Para</th>
+                        <th scope="col">Ödeme Şekli</th>
+                        <th scope="col">Ekspertiz Tarihi</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var car in Model)
+                    {
+                    <tr>
+                        <td>
+                            <i class="fas fa-check-circle"></i>
+                        </td>
+                        <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">@car.AracPlaka</td>
+                        <td>@car.SaseNo</td>
+                        <td>@car.AracMarka</td>
+                        <td>@car.AracModel</td>
+                        <td>@car.YakitTipi</td>
+                        <td>@car.Yil</td>
+                        <td>@car.AracKm</td>
+                        <td>@car.YedekAnahtar</td>
+                        <td>@car.Ucret</td>
+                        <td>@car.OdemeSekli</td>
+                        <td>@car.Tarih.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            <button onclick="applyTemplateE(@car.MusteriId, @car.Id)" type="button" class="btn btn-danger edit-button">Ekspertizi Görüntüle</button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        
+        </div>
+        </div>
+
+
+
+        <script>
+            function applyTemplateE(musteriId, expertiseId) {
+                window.location.href = '/Customer/ExpertiseReport?musteriId=' + musteriId + '&expertiseId=' + expertiseId;
+            }
+        </script>
+    </body>
+</html>

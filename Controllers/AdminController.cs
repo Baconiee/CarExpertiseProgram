@@ -7,6 +7,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using CarExpertise.Models;
+using Microsoft.EntityFrameworkCore;
+using CarExpertise.Data;
+using CarExpertise.Migrations;
+using System.Diagnostics;
+using System.Linq; // Linq kullanabilmek için gerekli kütüphane
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -14,15 +25,19 @@ using Microsoft.EntityFrameworkCore;
 public class AdminController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ApplicationDbContext _db;
 
-    public AdminController(UserManager<ApplicationUser> userManager)
+
+    public AdminController(UserManager<ApplicationUser> userManager, ApplicationDbContext db)
     {
         _userManager = userManager;
+        _db = db;
     }
 
     public async Task<IActionResult> ManageUsers()
     {
-        var users = _userManager.Users.ToList();
+        // Get the users where IsActive is true
+        var users = _userManager.Users.Where(u => u.IsActive).ToList();
         var userList = new List<UserViewModel>();
 
         int id = 1;
@@ -46,6 +61,7 @@ public class AdminController : Controller
 
         return View(userList);
     }
+
 
     public IActionResult Index()
     {
@@ -93,7 +109,8 @@ public class AdminController : Controller
                 CompanyName = model.CompanyName,
                 PhoneNumber = model.PhoneNumber,
                 Address = model.Address,
-                CompanyId = companyId
+                CompanyId = companyId,
+                IsActive = true // Set IsActive to true
             };
 
             if (model.Logo != null)
@@ -125,21 +142,56 @@ public class AdminController : Controller
         return View(model);
     }
 
+
+
     [HttpPost]
     public async Task<IActionResult> DeleteUser(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user != null)
         {
-            var result = await _userManager.DeleteAsync(user);
-            if (result.Succeeded)
+            // Get the user's CompanyId
+            var companyId = user.CompanyId;
+
+            // Update IsActive to false for the user
+            user.IsActive = false;
+
+            // Update IsActive to false for records in CarModelTable
+            var carModels = _db.CarModelTable.Where(cm => cm.CompanyId == companyId);
+            foreach (var carModel in carModels)
             {
-                return RedirectToAction("ManageUsers");
+                carModel.IsActive = false;
             }
-            else
+
+            // Update IsActive to false for records in Deneme1s
+            var deneme1s = _db.CustomerTable.Where(d => d.CompanyId == companyId);
+            foreach (var deneme1 in deneme1s)
             {
-                // Hata durumunu yönet
-                ModelState.AddModelError(string.Empty, "Kullanýcý silinemedi: " + string.Join(", ", result.Errors.Select(e => e.Description)));
+                deneme1.IsActive = false;
+            }
+
+            // Update IsActive to false for records in Deneme2s
+            var deneme2s = _db.ExpertiseTable.Where(d => d.CompanyId == companyId);
+            foreach (var deneme2 in deneme2s)
+            {
+                deneme2.IsActive = false;
+            }
+
+            // Update IsActive to false for records in EkspertizSablonTable
+            var ekspertizSablonlar = _db.ExpertiseTemplateTable.Where(es => es.CompanyId == companyId);
+            foreach (var ekspertizSablon in ekspertizSablonlar)
+            {
+                ekspertizSablon.IsActive = false;
+            }
+
+            // Save the changes to the database
+            await _db.SaveChangesAsync();
+
+            // Update the user's IsActive in the identity system
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "Kullanýcý güncellenemedi: " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
         }
         else
@@ -150,6 +202,8 @@ public class AdminController : Controller
         // Kullanýcý silinemediðinde ayný sayfayý tekrar göster
         return RedirectToAction("ManageUsers");
     }
+
+
     [HttpGet]
     public IActionResult GetUserDetailsByCompanyName(string companyName)
     {

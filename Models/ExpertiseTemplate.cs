@@ -1,11 +1,11 @@
 ﻿namespace CarExpertise.Models
 {
-    public class EkspertizSablon
+    public class ExpertiseTemplate
     {
         public int Id { get; set; }
         public int CompanyId { get; set; }
         public string? OnTampon { get; set; }
-        
+        public bool IsActive { get; set; }
 
         public string? SagOnCamurluk { get; set; }
 

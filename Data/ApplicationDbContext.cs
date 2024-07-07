@@ -11,12 +11,10 @@ namespace CarExpertise.Data
         }
 
         public DbSet<VehicleModels> VehicleModelss { get; set; }
-        public DbSet<CustomerModel> CustomerModels { get; set; }
-        public DbSet<ExpertiseModel> ExpertiseModels { get; set; }
-        public DbSet<Deneme1> Deneme1s { get; set; }
-        public DbSet<Deneme2> Deneme2s { get; set; }
+        public DbSet<CustomerModel> CustomerTable { get; set; }
+        public DbSet<ExpertiseModel> ExpertiseTable { get; set; }
         public DbSet<TryVehicle> Trys { get; set; }
         public DbSet<CarModel> CarModelTable { get; set; }
-        public DbSet<EkspertizSablon> EkspertizSablonTable { get; set; }
+        public DbSet<ExpertiseTemplate> ExpertiseTemplateTable { get; set; }
     }
 }

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+@model List<CarExpertise.Models.ExpertiseModel>
+<html lang="tr">
+<head>
+<style>
+.card {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    margin-bottom: 20px; /* Added margin to separate cards */
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+}
+
+.card-body {
+    background-color: white;
+}
+
+.card-footer {
+    background-color: white;
+    border-radius: 0 0 10px 10px;
+}
+
+.card-title input {
+    font-size: 1.50rem;
+    font-weight: 10000;
+    border: none;
+    width: 100%;
+    background-color: transparent;
+    pointer-events: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.card-body .bullet-input,
+.h2-input {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 5px 5px;
+    width: 100%;
+    background-color: #f8f9fa;
+    cursor: default;
+    pointer-events: none;
+}
+
+.bullet {
+    display: inline-block;
+    width: 8px;
+    height: 5px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.sablon {
+    position: relative;
+    top: 20px;
+}
+
+.bg-primary {
+    background-color: #007bff;
+    position: relative;
+}
+
+.card-body-wrapper {
+    overflow: hidden;
+    transition: max-height 1s ease, opacity 1s ease;
+}
+
+.card-body-wrapper.collapsed {
+    max-height: 0;
+    opacity: 0;
+}
+
+.label {
+    width: 150px; /* Adjust this width as needed */
+    text-align: right;
+    margin-right: 10px;
+}
+</style>
+</head>
+
+<body>
+@foreach (var record in Model)
+{
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex flex-column text-gray-600">
+                <div class="d-flex align-items-center py-2">
+                    <span class="bullet bg-primary me-3"></span>
+                    <span class="label">Araç Plaka:</span>
+                    <input name="AracPlaka" type="text" class="bullet-input ms-2" placeholder="Araç Plaka" value="@record.AracPlaka" readonly />
+                </div>
+                <div class="d-flex align-items-center py-2">
+                    <span class="bullet bg-primary me-3"></span>
+                    <span class="label">Þase No:</span>
+                    <input name="SaseNo" type="text" class="bullet-input ms-2" placeholder="Þase No" value="@record.SaseNo" readonly />
+                </div>
+                <div class="d-flex align-items-center py-2">
+                    <span class="bullet bg-primary me-3"></span>
+                    <span class="label">Araç Marka:</span>
+                    <input name="AracMarka" type="text" class="bullet-input ms-2" placeholder="Araç Marka" value="@record.AracMarka" readonly />
+                </div>
+                <div class="d-flex align-items-center py-2">
+                    <span class="bullet bg-primary me-3"></span>
+                    <span class="label">Araç Model:</span>
+                    <input name="AracModel" type="text" class="bullet-input ms-2" placeholder="Araç Model" value="@record.AracModel" readonly />
+                </div>
+                <div class="d-flex align-items-center py-2">
+                    <span class="bullet bg-primary me-3"></span>
+                    <span class="label">Yakýt Tipi:</span>
+                    <input name="YakitTipi" type="text" class="bullet-input ms-2" placeholder="Yakýt Tipi" value="@record.YakitTipi" readonly />
+                </div>
+                <div class="d-flex align-items-center py-2">
+                    <span class="bullet bg-primary me-3"></span>
+                    <span class="label">Yýl:</span>
+                    <input name="Yil" type="text" class="bullet-input ms-2" placeholder="Yýl" value="@record.Yil" readonly />
+                </div>
+                <div class="d-flex align-items-center py-2">
+                    <span class="bullet bg-primary me-3"></span>
+                    <span class="label">Araç Km:</span>
+                    <input name="AracKm" type="text" class="bullet-input ms-2" placeholder="Araç Km" value="@record.AracKm" readonly />
+                </div>
+                <div class="d-flex align-items-center py-2">
+                    <span class="bullet bg-primary me-3"></span>
+                    <span class="label">Yedek Anahtar:</span>
+                    <input name="YedekAnahtar" type="text" class="bullet-input ms-2" placeholder="Yedek Anahtar" value="@record.YedekAnahtar" readonly />
+                </div>
+                <div class="d-flex align-items-center py-2">
+                    <span class="bullet bg-primary me-3"></span>
+                    <span class="label">Ücret:</span>
+                    <input name="Ucret" type="text" class="bullet-input ms-2" placeholder="Ücret" value="@record.Ucret" readonly />
+                </div>
+                <div class="d-flex align-items-center py-2">
+                    <span class="bullet bg-primary me-3"></span>
+                    <span class="label">Ödeme Þekli:</span>
+                    <input name="OdemeSekli" type="text" class="bullet-input ms-2" placeholder="Ödeme Þekli" value="@record.OdemeSekli" readonly />
+                </div>
+                <div class="d-flex align-items-center py-2">
+                    <span class="bullet bg-primary me-3"></span>
+                    <span class="label">Tarih:</span>
+                    <input name="Tarih" type="text" class="bullet-input ms-2" placeholder="Tarih" value="@record.Tarih.ToString("dd.MM.yyyy")" readonly />
+                </div>
+            </div>
+        </div>
+        <button onclick="applyTemplateE(@record.MusteriId, @record.Id)" type="button" class="btn btn-danger edit-button">Ekspertizi Görüntüle</button>
+    </div>
+}
+<script>
+    function applyTemplateE(musteriId, expertiseId) {
+    window.location.href = '/Customer/ExpertiseReport?musteriId=' + musteriId + '&expertiseId=' + expertiseId;
+}
+</script>
+</body>
+</html>

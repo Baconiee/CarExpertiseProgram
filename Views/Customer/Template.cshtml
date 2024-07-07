@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CarExpertise.Models.EkspertizSablon>
+﻿@model IEnumerable<CarExpertise.Models.ExpertiseTemplate>
 
 <!DOCTYPE html>
 <html>
@@ -178,11 +178,11 @@
         });
 
         function applyTemplate(templateId) {
-            window.location.href = '/Customer/Deneme?templateId=' + templateId;
+            window.location.href = '/Customer/ExpertiseReport?templateId=' + templateId;
         }
 
         function applyTemplateUpdate(updateId) {
-            window.location.href = '/Customer/Deneme?updateId=' + updateId;
+            window.location.href = '/Customer/ExpertiseReport?updateId=' + updateId;
         }
     </script>
 </body>

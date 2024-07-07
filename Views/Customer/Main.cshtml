@@ -9,17 +9,17 @@
     DateTime endOfWeek = startOfWeek.AddDays(7).AddTicks(-1);
 
     // Haftalık ekspertiz sayısını hesapla
-    int haftalikEkspertiz = Model.CarModelList.Count(d => d.Tarih >= startOfWeek && d.Tarih <= endOfWeek && d.CompanyId == currentUserCompanyId);
+    int haftalikEkspertiz = Model.ExpertiseList.Count(d => d.Tarih >= startOfWeek && d.Tarih <= endOfWeek && d.CompanyId == currentUserCompanyId);
 
     // Haftalık ücret hesaplama
-    int haftalikUcret = Model.CarModelList.Where(d => d.Tarih >= startOfWeek && d.Tarih <= endOfWeek && d.CompanyId == currentUserCompanyId).Sum(d => d.Ucret ?? 0);
+    int haftalikUcret = Model.ExpertiseList.Where(d => d.Tarih >= startOfWeek && d.Tarih <= endOfWeek && d.CompanyId == currentUserCompanyId).Sum(d => d.Ucret ?? 0);
 
     // Geçerli ayın başlangıç ve bitiş tarihlerini hesapla
     DateTime startOfMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
     DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
 
     // Aylık ekspertiz sayısını hesapla
-    int aylikEkspertiz = Model.CarModelList.Count(d => d.Tarih >= startOfMonth && d.Tarih <= endOfMonth && d.CompanyId == currentUserCompanyId);
+    int aylikEkspertiz = Model.ExpertiseList.Count(d => d.Tarih >= startOfMonth && d.Tarih <= endOfMonth && d.CompanyId == currentUserCompanyId);
 
 
     // Geçerli yılın başlangıç ve bitiş tarihlerini hesapla
@@ -27,7 +27,7 @@
     DateTime endOfYear = startOfYear.AddYears(1).AddDays(-1);
 
     // Yıllık ekspertiz sayısını hesapla
-    int yillikEkspertiz = Model.CarModelList.Count(d => d.Tarih >= startOfYear && d.Tarih <= endOfYear && d.CompanyId == currentUserCompanyId);
+    int yillikEkspertiz = Model.ExpertiseList.Count(d => d.Tarih >= startOfYear && d.Tarih <= endOfYear && d.CompanyId == currentUserCompanyId);
 }
 
 
@@ -253,7 +253,7 @@
         <h2 style="font-size: 24px; font-weight: bold;">Müşteri Bilgileri</h2>
         <div class="header-container">
             <div class="alert alert-info" role="alert">
-                Hiçbir şey yazmadan aratırsanız tüm kayıtlı ekspertizleri görebilirsiniz.
+                Müşterinin adı, telefon numarası veya araç bilgileri ile arama yapabilirsiniz.
             </div>
             <form action="/Customer/Arat" method="post" class="search-form">
                 <input name="search" type="text" placeholder="Araç ara" class="search-input form-control">
@@ -274,7 +274,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Deneme1List)
+                @foreach (var item in Model.CustomerList)
             {
                 <tr>
                     <td>

@@ -1,185 +1,221 @@
 ﻿@model IEnumerable<CarExpertise.Models.CarModel>
 
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arama Sonuçları</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <!-- Bootstrap CSS dosyasını ekleyin -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!DOCTYPE html>
+    <html lang="tr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Arama Sonuçları</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <!-- Bootstrap CSS dosyasını ekleyin -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <style>
-
-
-
-        .search-input {
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            margin-right: 80px; /* Bu değeri ihtiyacınıza göre ayarlayabilirsiniz */
-            position: relative; /* Relative pozisyonlandırma */
-            left: -125px; /* Butonu sağa ötele */
-            top: 30px;
-        }
-
-
-        .custom-button {
-            background-color: white;
-            color: #150869;
-            border: 2px solid #150869;
-            padding: 5px 5px;
-            font-size: 16px;
-            border-radius: 5px; /* Köşeleri yuvarlatmak için */
-            cursor: pointer; /* Buton efekti için */
-            text-align: center;
-            text-decoration: none; /* Link ise alt çizgiyi kaldırmak için */
-            display: inline-block; /* Buton efekti için */
-            font-weight: bold; /* Yazıyı kalın yapmak için */
-            position: relative; /* Relative pozisyonlandırma */
-            left: 180px; /* Butonu sağa ötele */
-            top: -5px;
-        }
-
-            .custom-button:hover {
-                background-color: #150869; /* Üzerine gelindiğinde arka plan rengini değiştirme */
-                color: white; /* Üzerine gelindiğinde yazı rengini değiştirme */
+        <style>
+            .search-input {
+                padding: 8px 12px;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                font-size: 16px;
+                margin-right: 80px; /* Bu değeri ihtiyacınıza göre ayarlayabilirsiniz */
+                position: relative; /* Relative pozisyonlandırma */
+                left: -125px; /* Butonu sağa ötele */
+                top: 30px;
             }
 
-        .musteriBilgi {
-            position: relative; /* Relative pozisyonlandırma */
-            top: 60px;
-        }
+            .custom-button {
+                background-color: white;
+                color: #150869;
+                border: 2px solid #150869;
+                padding: 5px 5px;
+                font-size: 16px;
+                border-radius: 5px; /* Köşeleri yuvarlatmak için */
+                cursor: pointer; /* Buton efekti için */
+                text-align: center;
+                text-decoration: none; /* Link ise alt çizgiyi kaldırmak için */
+                display: inline-block; /* Buton efekti için */
+                font-weight: bold; /* Yazıyı kalın yapmak için */
+                position: relative; /* Relative pozisyonlandırma */
+                left: 180px; /* Butonu sağa ötele */
+                top: -5px;
+            }
 
-        .table-container {
-            margin-left: -70px; /* Burada istediğiniz piksel değerini ayarlayabilirsiniz */
-        }
+                .custom-button:hover {
+                    background-color: #150869; /* Üzerine gelindiğinde arka plan rengini değiştirme */
+                    color: white; /* Üzerine gelindiğinde yazı rengini değiştirme */
+                }
 
+            .musteriBilgi {
+                position: relative; /* Relative pozisyonlandırma */
+                top: 60px;
+            }
 
+            .table-container {
+                margin-left: -70px; /* Burada istediğiniz piksel değerini ayarlayabilirsiniz */
+            }
 
-        .custom-button {
-            position: relative; /* Relative pozisyonlandırma */
-            margin-right: 100px; /* Buton ile input arasında boşluk oluşturmak için kullanabilirsiniz */
-        }
-    </style>
-</head>
-<body>
-    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Silme Onayı</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Bu aracı silmek istediğinize emin misiniz?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Evet</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hayır</button>
+            .custom-button {
+                position: relative; /* Relative pozisyonlandırma */
+                margin-right: 100px; /* Buton ile input arasında boşluk oluşturmak için kullanabilirsiniz */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Silme Onayı</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Bu aracı silmek istediğinize emin misiniz?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" id="confirmDeleteButton">Evet</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hayır</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="table-container">
-        <h2 class="musteriBilgi" style="font-size: 24px; font-weight: bold;">Kayıtlı Araçlar</h2>
-        <form action="/Customer/Arat" method="post" style="display: inline-block; float: right;">
-            <input name="search" type="text" placeholder="Araç ara" class="search-input form-control">
-            <button type="submit" class="custom-button">Arat</button>
-        </form>
-        <div class="mb-3"></div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Araç Plaka</th>
-                    <th scope="col">Araç Şase</th>
-                    <th scope="col">Araç Marka</th>
-                    <th scope="col">Araç Model</th>
-                    <th scope="col">Yakıt Tipi</th>
-                    <th scope="col">Yıl</th>
-                    <th scope="col">Araç Kilometre</th>
-                    <th scope="col">Araç Yedek Anahtar</th>
-                    <th scope="col">Alınan Para</th>
-                    <th scope="col">Ödeme Şekli</th>
-                    <th scope="col">Ekspertiz Tarihi</th>
-                    <th scope="col"></th> <!-- Boş bir hücre ekleyerek butonu sağa yaslayacağız -->
-                    <th scope="col"></th> <!-- Boş bir hücre ekleyerek butonu sağa yaslayacağız -->
-                    <th scope="col"></th> <!-- Boş bir hücre ekleyerek butonu sağa yaslayacağız -->
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var car in Model)
-            {
-                <tr>
-                    <td>
-                        <i class="fas fa-check-circle"></i>
-                    </td>
-                    <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">@car.AracPlaka</td>
-                    <td>@car.SaseNo</td>
-                    <td>@car.AracMarka</td>
-                    <td>@car.AracModel</td>
-                    <td>@car.YakitTipi</td>
-                    <td>@car.Yil</td>
-                    <td>@car.AracKm</td>
-                    <td>@car.YedekAnahtar</td>
-                    <td>@car.Ucret</td>
-                    <td>@car.OdemeSekli</td>
-                    <td>@car.Tarih.ToString("dd.MM.yyyy")</td>
-                    <td>
-                        <button name="editCarId" onclick="applyEdit(@car.Id)" type="button" class="btn btn-primary">Düzenle</button>
-                    </td>
-                    <td>
-                        <button onclick="applyTemplateE(@car.MusteriId, @car.Id, @car.EkspertizId)" type="button" class="btn btn-danger edit-button">Ekspertizi Görüntüle</button>
-                    </td>
-                    <td>
-                        <form action="/Customer/DeleteCar" method="post" class="confirm-delete-form">
-                            <input type="hidden" value="@car.MusteriId" name="id">
-                            <input type="hidden" value="@car.EkspertizId" name="exId">
-                            <input type="hidden" value="@car.Id" name="carId">
-                            <button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#confirmDeleteModal">Sil</button>
-                        </form>
-                    </td>
-                </tr>
+        <div class="table-container">
+            <h2 class="musteriBilgi" style="font-size: 24px; font-weight: bold;">Kayıtlı Araçlar</h2>
+            <form action="/Customer/Arat" method="post" style="display: inline-block; float: right;">
+                <input name="search" type="text" placeholder="Araç ara" class="search-input form-control">
+                <button type="submit" class="custom-button">Arat</button>
+            </form>
+            <div class="mb-3"></div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Araç Plaka</th>
+                        <th scope="col">Araç Şase</th>
+                        <th scope="col">Araç Marka</th>
+                        <th scope="col">Araç Model</th>
+                        <th scope="col">Yakıt Tipi</th>
+                        <th scope="col">Yıl</th>
+                        <th scope="col">Araç Kilometre</th>
+                        <th scope="col">Araç Yedek Anahtar</th>
+                        <th scope="col">Alınan Para</th>
+                        <th scope="col">Ödeme Şekli</th>
+                        <th scope="col">Ekspertiz Tarihi</th>
+                        <th scope="col"></th> <!-- Boş bir hücre ekleyerek butonu sağa yaslayacağız -->
+                        <th scope="col"></th> <!-- Boş bir hücre ekleyerek butonu sağa yaslayacağız -->
+                        <th scope="col"></th> <!-- Boş bir hücre ekleyerek butonu sağa yaslayacağız -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var car in Model)
+                {
+                    <tr>
+                        <td>
+                            <i class="fas fa-check-circle"></i>
+                        </td>
+                        <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">@car.AracPlaka</td>
+                        <td>@car.SaseNo</td>
+                        <td>@car.AracMarka</td>
+                        <td>@car.AracModel</td>
+                        <td>@car.YakitTipi</td>
+                        <td>@car.Yil</td>
+                        <td>@car.AracKm</td>
+                        <td>@car.YedekAnahtar</td>
+                        <td>@car.Ucret</td>
+                        <td>@car.OdemeSekli</td>
+                        <td>@car.Tarih.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            <button name="editCarId" onclick="applyEdit(@car.Id)" type="button" class="btn btn-primary">Düzenle</button>
+                        </td>
+                        <td>
+                            <form class="expertise-form" action="/Customer/ShowExpertises" method="post">
+                                <input type="hidden" value="@car.SaseNo" name="saseNo">
+                                <button type="submit" class="btn btn-danger edit-button">Ekspertizleri Görüntüle</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/Customer/DeleteCar" method="post" class="confirm-delete-form">
+                                <input type="hidden" value="@car.MusteriId" name="id">
+                                <input type="hidden" value="@car.EkspertizId" name="exId">
+                                <input type="hidden" value="@car.Id" name="carId">
+                                <button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#confirmDeleteModal">Sil</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Popup Modal -->
+        <div id="expertiseModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content card card-flush h-md-100">
+                    <div class="modal-header card-header d-flex justify-content-between align-items-center">
+                        <div class="card-title">
+                            <input name="SablonAdi" type="text" class="h2-input" placeholder="Ekspertiz Detayları" readonly />
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body card-body-wrapper" id="cardBodyWrapper">
+                        <div class="card-body pt-1">
+                            <div class="d-flex flex-column text-gray-600" id="expertiseDetails">
+                                <!-- Details will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer card-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script>
+            $(document).ready(function () {
+                $('.expertise-form').submit(function (event) {
+                    event.preventDefault(); // Prevent the form from submitting normally
+                    var form = $(this);
+                    var url = form.attr('action');
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: form.serialize(),
+                        success: function (data) {
+                            $('#expertiseDetails').html(data); // Load data into the modal
+                            $('#expertiseModal').modal('show'); // Show the modal
+                        }
+                    });
+                });
+            });
+
+            function applyEdit(editCarId) {
+                window.location.href = '/Customer/EditCar?editCarId=' + editCarId;
             }
-            </tbody>
-        </table>
-    </div>
 
-    <script>
+            $(document).ready(function () {
+                var formToSubmit;
 
-        function applyEdit(editCarId) {
-            window.location.href = '/Customer/EditCar?editCarId=' + editCarId;
-        }
+                $('.delete-button').on('click', function () {
+                    formToSubmit = $(this).closest('form');
+                    $('#confirmDeleteModal').modal('show');
+                });
 
-        function applyTemplateE(searchCarId, carId, ekspertizId) {
-            window.location.href = '/Customer/Deneme?searchCarId=' + searchCarId + '&carId=' + carId + '&ekspertizId=' + ekspertizId;
-        }
-
-
-        $(document).ready(function () {
-            var formToSubmit;
-
-            $('.delete-button').on('click', function () {
-                formToSubmit = $(this).closest('form');
-                $('#confirmDeleteModal').modal('show');
+                $('#confirmDeleteButton').on('click', function () {
+                    formToSubmit.submit();
+                });
             });
-
-            $('#confirmDeleteButton').on('click', function () {
-                formToSubmit.submit();
-            });
-        });
-    </script>
-</body>
+        </script>
+    </body>
 </html>

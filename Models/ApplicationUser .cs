@@ -4,6 +4,7 @@ namespace CarExpertise.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        public bool IsActive { get; set; }
         public string TaxNumber { get; set; }
         public string Office { get; set; }
         public string Logo { get; set; }
